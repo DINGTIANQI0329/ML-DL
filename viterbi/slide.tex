@@ -1,0 +1,674 @@
+\documentclass[aspectratio=43, 9pt]{beamer}
+
+% --- 1. 基础设置与宏包 ---
+\usepackage{fontenc}
+\usepackage{fontspec}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usetikzlibrary{shadows.blur}
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{skins}
+
+% --- 2. 主题与字体配置 ---
+\usetheme{default}
+\usefonttheme{serif}
+\setmainfont{Times New Roman}
+
+% --- 3. 颜色定义 (Monet 'Water Lilies' Green Palette) ---
+\definecolor{monetDeepForest}{HTML}{293729}
+\definecolor{monetShadowGreen}{HTML}{395143}
+\definecolor{monetWaterLily}{HTML}{46674c}
+\definecolor{monetMoss}{HTML}{5c7b53}
+\definecolor{monetOlive}{HTML}{8ea25b}
+\definecolor{monetChartreuse}{HTML}{c5d08a}
+
+% --- 4. TCOLORBOX 全局设置 ---
+\tcbset{
+    enhanced,
+    boxrule=0.9pt,
+    arc=3pt,
+    left=10pt, right=10pt, top=10pt, bottom=10pt,
+    shadow={1mm}{-1mm}{0mm}{fill=black!45, draw=none}
+}
+
+% --- 5. 自定义 BEAMER 元素 ---
+
+% (A) 页眉: miniframes
+\useoutertheme[subsection=false]{miniframes}
+\setbeamercolor{section in head/foot}{bg=monetDeepForest, fg=white}
+\setbeamerfont{section in head/foot}{size=\small,series=\bfseries}
+\setbeamertemplate{section in head/foot}{\ttfamily\insertsectionhead}
+\setbeamercolor{subsection in head/foot}{bg=monetDeepForest, fg=white!70}
+\setbeamercolor{palette primary}{fg=white}
+
+% (B) 幻灯片标题
+\setbeamercolor{frametitle}{fg=white, bg=monetShadowGreen}
+\setbeamerfont{frametitle}{size=\LARGE, series=\bfseries}
+\setbeamertemplate{frametitle}{
+    \vspace*{-0.5mm}
+    \begin{beamercolorbox}[wd=\paperwidth, ht=2.4em, dp=0pt, left, leftskip=0.5cm]{frametitle}
+        \vbox to 2.4em{\vfil\hbox{\usebeamerfont{frametitle}\insertframetitle}\vfil}
+    \end{beamercolorbox}
+}
+
+% (C) 标题页颜色
+\setbeamercolor{title}{fg=monetDeepForest}
+\setbeamercolor{subtitle}{fg=monetShadowGreen}
+
+% (D) 列表项目符号 (Itemize) 颜色
+\setbeamercolor{itemize item}{fg=monetWaterLily}
+\setbeamercolor{itemize subitem}{fg=monetMoss}
+\setbeamertemplate{itemize items}[default] % 应用颜色到默认符号
+
+% (E) 大纲 (Outline / TOC) 样式
+\setbeamercolor{section in toc}{fg=monetDeepForest}
+
+\setbeamertemplate{section in toc}{%
+  \leavevmode
+  \makebox[2.5em][l]{%
+    \tikz[baseline=(char.base)]{
+      \node (char) {\inserttocsectionnumber};
+    }%
+  }%
+  \inserttocsection\par
+}
+
+% (F) 页脚
+\setbeamertemplate{footline}{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=\paperwidth,ht=2.25ex,dp=1ex,right]{page number in head/foot}
+    \usebeamerfont{page number in head/foot}\insertframenumber{} / \inserttotalframenumber\hspace*{2ex}
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+\setbeamercolor{page number in head/foot}{fg=gray}
+\setbeamerfont{page number in head/foot}{size=\tiny}
+
+% (G) 导航符号
+\setbeamertemplate{navigation symbols}{}
+
+% --- 6. 用于内容的自定义 TCOLORBOX 环境 ---
+% (基于您的版本进行保留)
+
+% (A) Takeaway Box
+\newtcolorbox{Takeaway}{
+  colback=monetChartreuse!10,
+  colframe=monetDeepForest,
+  colbacktitle=monetDeepForest,
+  title=\textbf{Takeaway},
+  fonttitle=\bfseries\large,
+  coltitle=white,
+  breakable,
+  % before upper={\parindent=1.5em},
+}
+
+% (B) Definition Box
+\newtcolorbox{NewDefinition}{
+  colback=monetChartreuse!10!white,
+  colframe=monetWaterLily,
+  colbacktitle=monetWaterLily,
+  title=\textbf{Definition},
+  fonttitle=\bfseries\large,
+  coltitle=white,
+  breakable,
+  % before upper={\parindent=1.5em},
+}
+
+% (C) Theorem Box
+\newtcolorbox{NewTheorem}{
+  colback=monetChartreuse!10!white,
+  colframe=monetWaterLily,
+  colbacktitle=monetWaterLily,
+  title=\textbf{Theorem},
+  fonttitle=\bfseries\large,
+  coltitle=white,
+  breakable,
+  before upper={\parindent=1.5em},
+}
+
+% (D) Question Box
+\newtcolorbox{Question}{
+  colback=white,
+  colframe=monetOlive,
+  colbacktitle=monetOlive,
+  title=\textbf{Question},
+  fonttitle=\bfseries\large\itshape,
+  coltitle=white,
+  breakable,
+  before upper={\parindent=1.5em},
+  attach boxed title to top left={yshift=-2mm, xshift=2mm},
+}
+
+% (E) Solution Box
+\newtcolorbox{Solution}{
+  colback=white,
+  colframe=monetOlive,
+  colbacktitle=monetOlive,
+  title=\textbf{Solution},
+  fonttitle=\bfseries\large\itshape,
+  coltitle=white,
+  breakable,
+  before upper={\parindent=1.5em},
+  attach boxed title to top left={yshift=-2mm, xshift=2mm},
+}
+
+
+% --- 7. 演示文稿元数据 ---
+\title{The Foundation of Probabilistic Sequence Modeling: HMM Viterbi Algorithm}
+\subtitle{Decoding the Unseen Sequence}
+\author{AI KUN,  CHENGSHENG, DUANXU, ISA WONG, TIANQI}
+\institute{ }
+\date{\today}
+
+
+% --- 8. 自动章节议程 ---
+\AtBeginSection{
+  \begin{frame}
+    \frametitle{Outline}
+    \tableofcontents[currentsection]
+  \end{frame}
+}
+
+% --- DOCUMENT BEGINS ---
+\begin{document}
+
+% --- TITLE FRAME ---
+\begin{frame}
+    \titlepage
+\end{frame}
+
+% --- 隐马尔可夫定义 ---
+\section{Background}
+\begin{frame}
+    \frametitle{Sequence Data and Latent Variable Models}
+    \begin{Takeaway}
+        Core Idea: The data sequence we directly observe is generated by an unobservable, latent (or "hidden") stochastic process.
+    \end{Takeaway}
+    
+    \vspace{1em}
+    
+    An intuitive analogy: A doctor infers the most likely underlying illness (hidden state) by observing a patient's symptoms over several days (observable events).
+    \begin{itemize}
+        \item \textbf{Hidden State}: The patient's true health condition (e.g., "Healthy" or "Fever").
+        \item \textbf{Observable Event}: The patient's reported symptoms (e.g., "feels normal," "chills," or "dizzy").
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Formal Definition of a Hidden Markov Model (HMM)}
+    \begin{NewDefinition}
+        An HMM can be formally defined by a five-tuple $\lambda = (S, O, \pi, A, B)$:
+        \begin{itemize}
+            \item $S$: A finite set of \textbf{hidden states} $\{s_1,..., s_K\}$.
+            \item $O$: A finite set of \textbf{observation symbols} $\{o_1,..., o_M\}$.
+            \item $\pi$: The \textbf{initial state probability} distribution, representing the probability of being in each state at $t=1$.
+            \item $A$: The \textbf{state transition probability} matrix, representing the probability of transitioning from one state to another.
+            \item $B$: The \textbf{observation (emission) probability} matrix, representing the probability of generating a specific observation from a given state.
+        \end{itemize}
+    \end{NewDefinition}
+\end{frame}
+
+\begin{frame}
+    \frametitle{The Generative Process of an HMM}
+    \begin{Takeaway}
+        An HMM is a generative model that provides a clear set of probabilistic rules to generate an observation sequence:
+        \begin{itemize}
+            \item[1.] Select a starting state according to the initial state distribution $\pi$.
+            \item[2.] Generate an observation from that state according to the emission probability $B$.
+            \item[3.] Transition to a new state according to the transition probability $A$.
+            \item[4.] Repeat steps 2 and 3 until the full sequence is generated.
+        \end{itemize}
+        This property allows HMMs to be used not only for analysis tasks (like decoding) but also for synthesis tasks (like speech synthesis).
+    \end{Takeaway}
+\end{frame}
+
+\begin{frame}
+    \frametitle{The Two Fundamental Assumptions of HMMs}
+    \begin{NewDefinition}
+        The computational tractability of HMMs is based on two key simplifying assumptions:
+        \begin{itemize}
+            \item \textbf{Markov Assumption (First-Order)}: \\
+            The probability of the current state \textbf{depends only on the previous state}, and is independent of all earlier states.
+            $$P(q_t | q_{t-1}, q_{t-2},..., q_1) = P(q_t | q_{t-1})$$
+            
+            \vspace{1em}
+            
+            \item \textbf{Output Independence Assumption}: \\
+            The probability of the current observation \textbf{depends only on the current hidden state}, and is independent of all other states and observations.
+            $$P(o_t | q_t, q_{t-1},..., o_{t-1},...) = P(o_t | q_t)$$
+        \end{itemize}
+    \end{NewDefinition}
+\end{frame}
+
+% --- 数学推导 ---
+\section{Algorithm}
+
+\begin{frame}
+    \frametitle{The Decoding Problem}
+    Within the framework of HMMs, there are three fundamental problems to solve: Evaluation, Learning, and Decoding. The Viterbi algorithm is specifically designed to solve the decoding problem.
+    
+    \vspace{1em}
+    
+    \begin{NewDefinition}
+        \textbf{The Decoding Problem} \\
+        Given a sequence of observations $O = (o_1, o_2,..., o_T)$ and a known HMM model $\lambda$, the goal is to find the single most likely sequence of hidden states $Q^* = (q_1^*, q_2^*,..., q_T^*)$ that produced this observation sequence.
+        $$Q^* = \arg\max_Q P(Q|O, \lambda)$$
+    \end{NewDefinition}
+\end{frame}
+
+\begin{frame}
+    \frametitle{The Inefficiency of a Brute-Force Search}
+    The most intuitive way to solve the decoding problem is through a brute-force search. This would involve:
+    \begin{itemize}
+        \item Listing every possible sequence of hidden states.
+        \item Calculating the probability of each sequence generating the given observations.
+        \item Selecting the sequence with the highest probability.
+    \end{itemize}
+    
+    \vspace{1em}
+    
+    However, this approach is computationally infeasible for any non-trivial problem.
+    
+    \begin{Takeaway}
+        For a model with $K$ states and an observation sequence of length $T$, there are $K^T$ possible state paths. This number grows exponentially, making a brute-force search impossible in practice. For instance, a simple model with just 2 states and a sequence of 1000 observations would have approximately $10^{301}$ possible paths.
+    \end{Takeaway}
+\end{frame}
+
+\begin{frame}
+    \frametitle{The Elegance of Dynamic Programming}
+    In 1967, Andrew Viterbi provided an elegant and efficient solution to this problem by applying the principle of \textbf{dynamic programming}.
+    
+    \vspace{1em}
+    
+    The core idea of dynamic programming is to solve a complex problem by breaking it down into a collection of simpler, overlapping subproblems. The solutions to these subproblems are stored and reused, avoiding redundant calculations.
+    
+    The Viterbi algorithm builds the final solution from the bottom up, step by step, ensuring that at each step, it only needs to consider the optimal solutions from the previous step.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Visualizing the Problem: The Trellis Diagram}
+    The execution of the Viterbi algorithm can be visualized using a structure known as a \textbf{trellis diagram}.
+    
+    \begin{itemize}
+        \item The horizontal axis represents the time steps, from $t=1$ to $T$.
+        \item The vertical axis represents the $K$ possible hidden states.
+        \item Each node $(t, j)$ in the diagram corresponds to being in state $s_j$ at time $t$.
+        \item Directed edges connect nodes from time $t-1$ to time $t$, representing possible state transitions.
+    \end{itemize}
+    
+    \vspace{1em}
+    
+    In this view, the decoding problem is transformed into finding the single "best" path through this trellis from the start to the end.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Formalizing the Algorithm: Key Variables}
+    The Viterbi algorithm iteratively populates two matrices to keep track of the optimal path information at each time step. These are typically denoted as:
+    
+    \vspace{1em}
+    
+    \begin{NewDefinition}
+        \begin{itemize}
+            \item \textbf{The Viterbi Probability Matrix ($V$ or $\delta$):} \\
+            $V_t(j)$ stores the probability of the \textit{most likely} state sequence that ends in state $s_j$ at time $t$, having generated the first $t$ observations.
+            
+            \vspace{1em}
+            
+            \item \textbf{The Backpointer Matrix ($\psi$ or 'ptr'):} \\
+            $\psi_t(j)$ stores the state at time $t-1$ that led to the most likely path ending in state $s_j$ at time $t$. This allows us to reconstruct the path later.
+        \end{itemize}
+    \end{NewDefinition}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Step 1: Initialization}
+    The algorithm begins at the first time step ($t=1$). For each possible hidden state, we calculate the probability of the system starting in that state and emitting the first observation, $o_1$.
+    
+    \vspace{1em}
+    
+    This step establishes the base case for the dynamic programming recursion.
+    
+    \begin{NewTheorem}
+        For each state $j = 1,..., K$:
+        \begin{itemize}
+            \item \textbf{Probability Calculation:}
+            $$V_1(j) = \pi_j \cdot B_j(o_1)$$
+            
+            \item \textbf{Backpointer Initialization:}
+            $$\psi_1(j) = 0 \quad \text{(or null)}$$
+        \end{itemize}
+    \end{NewTheorem}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Step 2: Recursion}
+    The algorithm then proceeds iteratively from time $t=2$ to $T$. For each state $s_j$ at each time step $t$, it calculates the maximum probability of any path that ends at this node.
+    
+    \vspace{1em}
+    
+    This is done by considering all possible paths from the previous time step, $t-1$. For each state $s_j$, we look at all $K$ states at time $t-1$ and find the one that provides the most probable path to $s_j$. This is the core of the algorithm, where the "Principle of Optimality" is applied: an optimal path must be composed of optimal sub-paths.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Step 2: Recursion Formulas}
+    \begin{NewTheorem}
+        For each time step $t = 2,..., T$ and for each state $j = 1,..., K$:
+        \begin{itemize}
+            \item \textbf{Probability Calculation:}
+            $$V_t(j) = \max_{i=1}^K [V_{t-1}(i) \cdot A_{ij}] \cdot B_j(o_t)$$
+            
+            \item \textbf{Backpointer Storage:}
+            $$\psi_t(j) = \arg\max_{i=1}^K [V_{t-1}(i) \cdot A_{ij}]$$
+        \end{itemize}
+    \end{NewTheorem}
+    
+    \vspace{1em}
+    
+    The 'argmax' function stores the index of the previous state ($i$) that maximized the probability, which is our backpointer.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Step 3: Termination}
+    After the recursion step has been completed for all time steps up to $T$, the forward pass of the algorithm is complete.
+    
+    \vspace{1em}
+    
+    The probability of the single most likely path for the entire observation sequence is simply the maximum value in the final column of the Viterbi matrix, $V_T$. The final state of this optimal path is the state that corresponds to this maximum probability.
+    
+    \begin{NewTheorem}
+        \begin{itemize}
+            \item \textbf{Overall Path Probability:}
+            $$P^* = \max_{j=1}^K V_T(j)$$
+            
+            \item \textbf{Final State of Optimal Path:}
+            $$q_T^* = \arg\max_{j=1}^K V_T(j)$$
+        \end{itemize}
+    \end{NewTheorem}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Step 4: Path Backtracking}
+    While the forward pass gives us the probability of the best path and its final state, it does not tell us the full sequence of states.
+    
+    \vspace{1em}
+    
+    To find the complete path, we use the backpointer matrix, $\psi$. Starting from the final state $q_T^*$, we trace our steps backward through the trellis, following the pointers stored at each step.
+    
+    \begin{NewTheorem}
+        For each time step $t = T-1$ down to $1$:
+        $$q_t^* = \psi_{t+1}(q_{t+1}^*)$$
+    \end{NewTheorem}
+    
+    \vspace{1em}
+    
+    This process reconstructs the most likely sequence of hidden states from end to beginning, revealing the complete Viterbi path.
+\end{frame}
+
+% 例子
+\section{Example \& Analysis}
+
+\begin{frame}
+    \frametitle{Example: The Weather and Activities Model}
+    To make the algorithm concrete, we will walk through a classic example that infers the weather (the hidden state) based on a person's activities (the observations).
+
+    \vspace{1em}
+    
+    \begin{NewDefinition}
+        \textbf{Model Components}
+        \begin{itemize}
+            \item \textbf{Hidden States (S)}: \{Rainy, Sunny\}
+            \item \textbf{Observations (O)}: \{Walk, Shop, Clean\}
+            \item \textbf{Sequence to Decode}: (Walk, Shop, Clean)
+        \end{itemize}
+    \end{NewDefinition}
+\end{frame}
+
+\begin{frame}
+    \frametitle{HMM Parameters for the Weather Model}
+    The model is defined by the following probability matrices:
+    
+    \textbf{1. Initial Probabilities ($\pi$):}
+        $P(\text{Rainy}) = 0.6$, $P(\text{Sunny}) = 0.4$
+    
+    \textbf{2. Transition Matrix (A)}
+    This is a 2x2 matrix representing the probability of transitioning from one weather state to another. Rows represent the previous day's weather (From), and columns represent the current day's weather (To).
+    $$
+    A = \begin{pmatrix}
+    P(\text{Rainy}|\text{Rainy}) & P(\text{Sunny}|\text{Rainy}) \\
+    P(\text{Rainy}|\text{Sunny}) & P(\text{Sunny}|\text{Sunny})
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+    0.7 & 0.3 \\
+    0.4 & 0.6
+    \end{pmatrix}
+    $$
+    
+    \textbf{3. Emission Matrix (B)}
+    This is a 2x3 matrix representing the probability of performing a specific activity given a certain weather state. Rows represent the weather state (State), and columns represent the observed activity (Observation).
+    $$
+    B = \begin{pmatrix}
+    P(\text{Walk}|\text{Rainy}) & P(\text{Shop}|\text{Rainy}) & P(\text{Clean}|\text{Rainy}) \\
+    P(\text{Walk}|\text{Sunny}) & P(\text{Shop}|\text{Sunny}) & P(\text{Clean}|\text{Sunny})
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+    0.1 & 0.4 & 0.5 \\
+    0.6 & 0.3 & 0.1
+    \end{pmatrix}
+    $$
+\end{frame}
+
+\begin{frame}
+    \frametitle{Calculation: Initialization (t=1)}
+    We begin with the first observation, 'Walk'. We calculate the initial Viterbi probabilities for each state.
+    
+    \vspace{1em}
+    
+    \textbf{For state 'Rainy':}
+    \begin{itemize}
+        \item $V_1(\text{Rainy}) = \pi_{\text{Rainy}} \times B_{\text{Rainy}}(\text{Walk})$
+        \item $V_1(\text{Rainy}) = 0.6 \times 0.1 = 0.06$
+    \end{itemize}
+    
+    \textbf{For state 'Sunny':}
+    \begin{itemize}
+        \item $V_1(\text{Sunny}) = \pi_{\text{Sunny}} \times B_{\text{Sunny}}(\text{Walk})$
+        \item $V_1(\text{Sunny}) = 0.4 \times 0.6 = 0.24$
+    \end{itemize}
+    
+    \begin{Takeaway}
+        At t=1, the most likely starting state is 'Sunny' because its probability (0.24) is higher than 'Rainy' (0.06).
+    \end{Takeaway}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Calculation: Recursion (t=2)}
+    Next, we process the second observation, 'Shop'. For each current state, we find the most probable path leading to it from all possible previous states.
+    
+    \vspace{1em}
+    
+    \textbf{For state 'Rainy' at t=2:}
+    \begin{itemize}
+        \item Path from 'Rainy' (t=1): $V_1(\text{Rainy}) \times A_{\text{Rainy} \to \text{Rainy}} = 0.06 \times 0.7 = 0.042$
+        \item Path from 'Sunny' (t=1): $V_1(\text{Sunny}) \times A_{\text{Sunny} \to \text{Rainy}} = 0.24 \times 0.4 = 0.096$
+    \end{itemize}
+    
+    \begin{NewTheorem}
+        We take the maximum of these path probabilities and multiply by the emission probability:
+        \begin{itemize}
+            \item $V_2(\text{Rainy}) = \max(0.042, 0.096) \times B_{\text{Rainy}}(\text{Shop})$
+            \item $V_2(\text{Rainy}) = 0.096 \times 0.4 = 0.0384$
+            \item The backpointer $\psi_2(\text{Rainy})$ is set to 'Sunny', as it provided the max probability.
+        \end{itemize}
+    \end{NewTheorem}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Calculation: Termination and Backtracking}
+    After filling the matrices for all time steps, we find the final state and trace back the path.
+    
+    \vspace{1em}
+    
+    \textbf{Termination (t=3):}
+    \begin{itemize}
+        \item We compare the final probabilities: $V_3(\text{Rainy}) = 0.01344$ and $V_3(\text{Sunny}) = 0.002592$.
+        \item The maximum probability is 0.01344, so the final state of our path is $q_3^* = \text{Rainy}$.
+    \end{itemize}
+    
+    \textbf{Backtracking:}
+    \begin{itemize}
+        \item At t=3, our state is 'Rainy'. The backpointer is $\psi_3(\text{Rainy}) = \text{Rainy}$. So, $q_2^* = \text{Rainy}$.
+        \item At t=2, our state is 'Rainy'. The backpointer is $\psi_2(\text{Rainy}) = \text{Sunny}$. So, $q_1^* = \text{Sunny}$.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Final Result of the Example}
+    By following the backpointers from the end to the beginning, we reconstruct the most likely sequence of hidden states.
+    
+    \vspace{1em}
+    
+    \begin{Takeaway}
+        \textbf{Final Decoding Result} \\
+        For the observation sequence (Walk, Shop, Clean), the most likely sequence of hidden states is:
+        \textbf{(Sunny, Rainy, Rainy)}
+        with a total probability of 0.01344.
+    \end{Takeaway}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Computational Complexity}
+    The efficiency of the Viterbi algorithm is one of its most important features, making it practical for real-world applications.
+    
+    \vspace{1em}
+    
+    \begin{NewDefinition}
+        Let $K$ be the number of hidden states and $T$ be the length of the observation sequence.
+        \begin{itemize}
+            \item \textbf{Time Complexity: $O(K^2T)$} \\
+            This arises because for each of the $T$ time steps, and for each of the $K$ states, we must iterate through all $K$ previous states to find the maximum probability.
+            
+            \vspace{0.5em}
+            
+            \item \textbf{Space Complexity: $O(KT)$} \\
+            This is required to store the Viterbi probability matrix and the backpointer matrix, both of which have dimensions $K \times T$.
+        \end{itemize}
+    \end{NewDefinition}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Implementation: Numerical Stability}
+    A major practical challenge when implementing the Viterbi algorithm is numerical underflow.
+    
+    \vspace{1em}
+    
+    \begin{NewDefinition}
+        \textbf{Problem: Arithmetic Underflow} \\
+        When multiplying a long sequence of small probabilities (numbers between 0 and 1), the final product can become smaller than the minimum positive number that a computer can represent. This causes the value to be rounded to zero, making the algorithm fail.
+    \end{NewDefinition}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Implementation: The Log-Space Solution}
+    The standard solution to underflow is to perform calculations in logarithmic space.
+    
+    \vspace{1em}
+    
+    This simple mathematical trick transforms the algorithm's operations, ensuring stability.
+    \begin{itemize}
+        \item Multiplication becomes addition: $\log(a \cdot b) = \log(a) + \log(b)$
+        \item The 'max' operation remains a 'max' operation on the sum of logs.
+    \end{itemize}
+    
+    \begin{Takeaway}
+        \textbf{The Log-Domain Recursive Formula} \\
+        The core recursion is transformed into a sum of logarithms, which is numerically stable and is standard practice in all real-world HMM implementations.
+        $$\log(V_t(j)) = \max_{i=1}^K [\log(V_{t-1}(i)) + \log(A_{ij})] + \log(B_j(o_t))$$
+    \end{Takeaway}
+\end{frame}
+
+
+% 应用与局限性
+\section{Application \& Limitations}
+
+\begin{frame}
+    \frametitle{Application: Part-of-Speech (POS) Tagging}
+    Part-of-Speech (POS) tagging is a classic NLP task that serves as a perfect example of the Viterbi algorithm in action.
+    
+    \vspace{1em}
+    
+    \begin{NewDefinition}
+        \textbf{HMM for POS Tagging} \\
+        We frame the problem by defining words as observations and tags as the hidden states we want to uncover.
+        \begin{itemize}
+            \item \textbf{Hidden States}: The set of possible POS tags (e.g., 'NN' for noun, 'VB' for verb).
+            \item \textbf{Observations}: The sequence of words in the sentence.
+        \end{itemize}
+    \end{NewDefinition}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Decoding a Sentence}
+    After learning transition and emission probabilities from a training corpus, the Viterbi algorithm decodes the most likely tag sequence for a new sentence.
+    
+    \vspace{1em}
+    
+    \begin{Takeaway}
+        \textbf{Example of Decoding} \\
+        For the sentence: “Janet will back the bill” \\
+        The Viterbi algorithm computes the most probable tag sequence as: \\
+        \textbf{(NNP, MD, VB, DT, NN)} \\
+        (Proper Noun, Modal, Verb, Determiner, Noun)
+    \end{Takeaway}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Key Limitations of the HMM Tagger}
+    The simplicity of the HMM leads to significant challenges when applied to complex data like natural language.
+    
+    \vspace{1em}
+    
+    \begin{Takeaway}
+        \textbf{Core Issues}
+        \begin{itemize}
+            \item \textbf{Strict Independence Assumptions}: The model cannot capture long-range dependencies. For example, in grammar, a word's tag can be influenced by words far earlier in the sentence, which the Markov assumption ignores.
+            
+            \vspace{0.5em}
+            
+            \item \textbf{Data Sparsity (OOV Problem)}: If a word was not in the training data, its emission probability is zero. This causes the Viterbi algorithm to fail, as any path containing the unknown word will have a probability of zero.
+        \end{itemize}
+    \end{Takeaway}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Modern Perspectives and Advancements}
+    The limitations of HMMs directly spurred the development of more powerful sequential models.
+    
+    \vspace{1em}
+    
+    \textbf{Models Beyond HMM:}
+        \begin{itemize}
+            \item \textbf{Conditional Random Fields (CRFs)}: Relax the strict independence assumptions, allowing for a richer set of features from the entire sentence.
+            \item \textbf{Recurrent Neural Networks (RNNs) \& Transformers}: Capture much more complex and long-range dependencies, leading to state-of-the-art performance.
+        \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{The Enduring Idea of Viterbi}
+    While the HMM itself has been largely superseded for tasks like POS tagging, the core algorithm remains highly relevant.
+    
+    \vspace{1em}
+    
+    \begin{Takeaway}
+        \textbf{The Viterbi Legacy} \\
+        The fundamental idea—\textbf{using dynamic programming to find an optimal path through a trellis}—is a cornerstone of sequence modeling. It continues to be used as the final decoding step in modern, powerful architectures like the BiLSTM-CRF model.
+    \end{Takeaway}
+\end{frame}
+
+\end{document}
+
