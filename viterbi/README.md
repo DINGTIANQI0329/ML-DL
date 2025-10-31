@@ -41,7 +41,7 @@ This project implements the classic **Viterbi Algorithm** in the **Matlab** envi
 
 The Viterbi algorithm is a method based on **Dynamic Programming** used to efficiently solve the HMM decoding problem.
 
-* **Problem**: Given an observation sequence $O$, find the most probable state sequence $Q^*$: $Q^{*}=arg~max_{Q}P(Q|O,\lambda)$.
+* **Problem**: Given an observation sequence $O$, find the most probable state sequence $$Q^{*} : Q^{*}=arg~max_{Q}P(Q|O,\lambda)$$.
 * **Dynamic Programming**: Avoids the brute-force search of $K^T$ paths. By storing only the optimal sub-path ($V_t(j)$) and its predecessor state ($\psi_t(j)$) for reaching each state $s_j$ at time $t$, it achieves an $O(K^2T)$ time complexity.
 * **Log-Space**: To prevent numerical underflow caused by multiplying many small probabilities, calculations are performed in logarithmic space:
     $$\log(V_t(j)) = \max_{i=1}^K[\log(V_{t-1}(i)) + \log(A_{ij})] + \log(B_{j}(o_t))$$
